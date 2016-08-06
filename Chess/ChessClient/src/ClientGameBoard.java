@@ -40,6 +40,8 @@ public class ClientGameBoard extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		this.validate();
 
 	}
 
@@ -942,130 +944,8 @@ public class ClientGameBoard extends JPanel {
 				s.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent me) {
-						if (isCurrentPlayer == true) {
-							if (possibleMovesShown == false) {
-								if (s.getCurrentPieceId() != null) {
-									selectedSpace = s;
-									showPossibleMoves(s);
-									possibleMovesShown = true;
-								}
-							} else {
-
-								if (s.getHighlighted() == true) {
-
-									if (s.isCastleMove() == true) {
-
-										if (s.getX() == 7 && s.getY() == 6) {
-											movePiece(spaces.get(7).get(5), spaces.get(7).get(7));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(5);
-										} else if (s.getX() == 7 && s.getY() == 2) {
-											movePiece(spaces.get(7).get(3), spaces.get(7).get(0));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(3);
-										} else if (s.getX() == 0 && s.getY() == 6) {
-											movePiece(spaces.get(0).get(5), spaces.get(0).get(7));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(5);
-										} else if (s.getX() == 0 && s.getY() == 2) {
-											movePiece(spaces.get(0).get(3), spaces.get(0).get(0));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(3);
-										} else {
-											System.out.println("ERROR!");
-										}
-									}
-
-									ClientSpace tempSpace = new ClientSpace(s.getX(), s.getY());
-									tempSpace.setCurrentPiece(s.getCurrentPiece());
-									tempSpace.setCurrentPieceId(s.getCurrentPieceId());
-									tempSpace.setPlayer(s.getPlayer());
-									String capturedSpaceId = s.getCurrentPieceId();
-									movePiece(s, selectedSpace);
-
-									if (checkForCurrentPlayerCheck(s.getPlayer()) == true) {
-
-										JOptionPane.showMessageDialog(null, "You can't put yourself in check!");
-										movePiece(selectedSpace, s);
-										movePiece(s, tempSpace);
-										return;
-									} else {
-
-										selectedSpace.setOriginalPieceHasMoved(true);
-										s.setOriginalPieceHasMoved(true);
-
-									}
-
-									if (s.isCastleMove() == false) {
-										messageOut.println("move " + s.getX() + " " + s.getY() + " "
-												+ selectedSpace.getX() + " " + selectedSpace.getY());
-										if (capturedSpaceId == null) {
-
-											gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-													selectedSpace.getX(), selectedSpace.getY(), false);
-
-										} else {
-											gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-													selectedSpace.getX(), selectedSpace.getY(), true);
-
-										}
-
-									} else {
-										messageOut.println("castle " + s.getX() + " " + s.getY());
-									}
-
-									if (s.getCurrentPieceId().equals("whitePawn") && s.getX() == 0) {
-										Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
-												"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
-										String chosenPieceString;
-										if (chosenPiece != null) {
-											chosenPieceString = chosenPiece.toString();
-										} else {
-											chosenPieceString = "Queen";
-										}
-										messageOut.println("promotion " + s.getX() + " " + s.getY() + " white"
-												+ chosenPieceString);
-										s.promote("white" + chosenPieceString, s.getPlayer());
-
-									} else if (s.getCurrentPieceId().equals("blackPawn") && s.getX() == 7) {
-										Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
-												"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
-										String chosenPieceString;
-										if (chosenPiece != null) {
-											chosenPieceString = chosenPiece.toString();
-										} else {
-											chosenPieceString = "Queen";
-										}
-										messageOut.println("promotion " + s.getX() + " " + s.getY() + " black"
-												+ chosenPieceString);
-										s.promote("black" + chosenPieceString, s.getPlayer());
-
-									}
-
-									if (checkForOpponentCheck(s.getPlayer()) == true) {
-										if (checkForCheckmate(s.getPlayer()) == true) {
-											JOptionPane.showMessageDialog(null, "Checkmate! You win!");
-											messageOut.println("checkmate");
-											gameHistoryPanel.checkmate();
-										} else {
-											gameHistoryPanel.check();
-											messageOut.println("checkOnly ");
-										}
-
-									} else {
-										if (checkForStalemate(s.getPlayer()) == true) {
-											JOptionPane.showMessageDialog(null, "Stalemate.");
-											messageOut.println("stalemate");
-										}
-									}
-
-									isCurrentPlayer = false;
-								}
-								removePossibleMoves();
-								possibleMovesShown = false;
-
-							}
-						}
+						
+						mouseListenerHandler(s);
 
 					}
 
@@ -1078,16 +958,20 @@ public class ClientGameBoard extends JPanel {
 			}
 			spaces.add(rows);
 		}
-
+		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				grid.add(spaces.get(i).get(j));
+				grid.validate();
 			}
 		}
 		
 		grid.setOpaque(false);
 		this.add(grid);
 		this.validate();
+
+		
+	
 	}
 
 	public void invertBoard() {
@@ -1118,130 +1002,8 @@ public class ClientGameBoard extends JPanel {
 				s.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent me) {
-						if (isCurrentPlayer == true) {
-							if (possibleMovesShown == false) {
-								if (s.getCurrentPieceId() != null) {
-									selectedSpace = s;
-									showPossibleMoves(s);
-									possibleMovesShown = true;
-								}
-							} else {
-
-								if (s.getHighlighted() == true) {
-
-									if (s.isCastleMove() == true) {
-
-										if (s.getX() == 7 && s.getY() == 6) {
-											movePiece(spaces.get(7).get(5), spaces.get(7).get(7));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(5);
-										} else if (s.getX() == 7 && s.getY() == 2) {
-											movePiece(spaces.get(7).get(3), spaces.get(7).get(0));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(3);
-										} else if (s.getX() == 0 && s.getY() == 6) {
-											movePiece(spaces.get(0).get(5), spaces.get(0).get(7));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(5);
-										} else if (s.getX() == 0 && s.getY() == 2) {
-											movePiece(spaces.get(0).get(3), spaces.get(0).get(0));
-											spaces.get(7).get(7).setOriginalPieceHasMoved(true);
-											gameHistoryPanel.castle(3);
-										} else {
-											System.out.println("ERROR!");
-										}
-									}
-
-									ClientSpace tempSpace = new ClientSpace(s.getX(), s.getY());
-									tempSpace.setCurrentPiece(s.getCurrentPiece());
-									tempSpace.setCurrentPieceId(s.getCurrentPieceId());
-									tempSpace.setPlayer(s.getPlayer());
-									String capturedSpaceId = s.getCurrentPieceId();
-									movePiece(s, selectedSpace);
-
-									if (checkForCurrentPlayerCheck(s.getPlayer()) == true) {
-										JOptionPane.showMessageDialog(null, "You can't put yourself in check!");
-										movePiece(selectedSpace, s);
-										movePiece(s, tempSpace);
-										return;
-									} else {
-
-										selectedSpace.setOriginalPieceHasMoved(true);
-										s.setOriginalPieceHasMoved(true);
-
-									}
-
-									if (s.isCastleMove() == false) {
-										messageOut.println("move " + s.getX() + " " + s.getY() + " "
-												+ selectedSpace.getX() + " " + selectedSpace.getY());
-
-										if (capturedSpaceId == null) {
-											gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-													selectedSpace.getX(), selectedSpace.getY(), false);
-
-										} else {
-											gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-													selectedSpace.getX(), selectedSpace.getY(), true);
-
-										}
-
-									} else {
-										messageOut.println("castle " + s.getX() + " " + s.getY());
-									}
-
-									if (s.getCurrentPieceId().equals("blackPawn") && s.getX() == 7) {
-										Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
-												"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
-										String chosenPieceString;
-										if (chosenPiece != null) {
-											chosenPieceString = chosenPiece.toString();
-										} else {
-											chosenPieceString = "Queen";
-										}
-										messageOut.println("promotion " + s.getX() + " " + s.getY() + " black"
-												+ chosenPieceString);
-										s.promote("black" + chosenPieceString, s.getPlayer());
-
-									} else if (s.getCurrentPieceId().equals("whitePawn") && s.getX() == 0) {
-										Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
-												"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
-										String chosenPieceString;
-										if (chosenPiece != null) {
-											chosenPieceString = chosenPiece.toString();
-										} else {
-											chosenPieceString = "Queen";
-										}
-										messageOut.println("promotion " + s.getX() + " " + s.getY() + " white"
-												+ chosenPieceString);
-										s.promote("white" + chosenPieceString, s.getPlayer());
-
-									}
-
-									if (checkForOpponentCheck(s.getPlayer()) == true) {
-										if (checkForCheckmate(s.getPlayer()) == true) {
-											JOptionPane.showMessageDialog(null, "Checkmate! You win!");
-											messageOut.println("checkmate");
-											gameHistoryPanel.checkmate();
-										} else {
-											gameHistoryPanel.check();
-											messageOut.println("checkOnly ");
-										}
-
-									} else {
-										if (checkForStalemate(s.getPlayer()) == true) {
-											JOptionPane.showMessageDialog(null, "Stalemate.");
-											messageOut.println("stalemate");
-										}
-									}
-
-									isCurrentPlayer = false;
-								}
-
-								removePossibleMoves();
-								possibleMovesShown = false;
-
-							}
-						}
+			
+						mouseListenerHandler(s);
 
 					}
 
@@ -2735,6 +2497,133 @@ public class ClientGameBoard extends JPanel {
 
 	public ArrayList<ArrayList<ClientSpace>> getSpaces() {
 		return spaces;
+	}
+	
+	private void mouseListenerHandler(ClientSpace s){
+		if (isCurrentPlayer == true) {
+			if (possibleMovesShown == false) {
+				if (s.getCurrentPieceId() != null) {
+					selectedSpace = s;
+					showPossibleMoves(s);
+					possibleMovesShown = true;
+				}
+			} else {
+
+				if (s.getHighlighted() == true) {
+
+					if (s.isCastleMove() == true) {
+
+						if (s.getX() == 7 && s.getY() == 6) {
+							movePiece(spaces.get(7).get(5), spaces.get(7).get(7));
+							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
+							gameHistoryPanel.castle(5);
+						} else if (s.getX() == 7 && s.getY() == 2) {
+							movePiece(spaces.get(7).get(3), spaces.get(7).get(0));
+							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
+							gameHistoryPanel.castle(3);
+						} else if (s.getX() == 0 && s.getY() == 6) {
+							movePiece(spaces.get(0).get(5), spaces.get(0).get(7));
+							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
+							gameHistoryPanel.castle(5);
+						} else if (s.getX() == 0 && s.getY() == 2) {
+							movePiece(spaces.get(0).get(3), spaces.get(0).get(0));
+							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
+							gameHistoryPanel.castle(3);
+						} else {
+							System.out.println("ERROR!");
+						}
+					}
+
+					ClientSpace tempSpace = new ClientSpace(s.getX(), s.getY());
+					tempSpace.setCurrentPiece(s.getCurrentPiece());
+					tempSpace.setCurrentPieceId(s.getCurrentPieceId());
+					tempSpace.setPlayer(s.getPlayer());
+					String capturedSpaceId = s.getCurrentPieceId();
+					movePiece(s, selectedSpace);
+
+					if (checkForCurrentPlayerCheck(s.getPlayer()) == true) {
+						JOptionPane.showMessageDialog(null, "You can't put yourself in check!");
+						movePiece(selectedSpace, s);
+						movePiece(s, tempSpace);
+						return;
+					} else {
+
+						selectedSpace.setOriginalPieceHasMoved(true);
+						s.setOriginalPieceHasMoved(true);
+
+					}
+
+					if (s.isCastleMove() == false) {
+						messageOut.println("move " + s.getX() + " " + s.getY() + " "
+								+ selectedSpace.getX() + " " + selectedSpace.getY());
+
+						if (capturedSpaceId == null) {
+							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
+									selectedSpace.getX(), selectedSpace.getY(), false);
+
+						} else {
+							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
+									selectedSpace.getX(), selectedSpace.getY(), true);
+
+						}
+
+					} else {
+						messageOut.println("castle " + s.getX() + " " + s.getY());
+					}
+
+					if (s.getCurrentPieceId().equals("blackPawn") && s.getX() == 7) {
+						Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
+								"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
+						String chosenPieceString;
+						if (chosenPiece != null) {
+							chosenPieceString = chosenPiece.toString();
+						} else {
+							chosenPieceString = "Queen";
+						}
+						messageOut.println("promotion " + s.getX() + " " + s.getY() + " black"
+								+ chosenPieceString);
+						s.promote("black" + chosenPieceString, s.getPlayer());
+
+					} else if (s.getCurrentPieceId().equals("whitePawn") && s.getX() == 0) {
+						Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
+								"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
+						String chosenPieceString;
+						if (chosenPiece != null) {
+							chosenPieceString = chosenPiece.toString();
+						} else {
+							chosenPieceString = "Queen";
+						}
+						messageOut.println("promotion " + s.getX() + " " + s.getY() + " white"
+								+ chosenPieceString);
+						s.promote("white" + chosenPieceString, s.getPlayer());
+
+					}
+
+					if (checkForOpponentCheck(s.getPlayer()) == true) {
+						if (checkForCheckmate(s.getPlayer()) == true) {
+							JOptionPane.showMessageDialog(null, "Checkmate! You win!");
+							messageOut.println("checkmate");
+							gameHistoryPanel.checkmate();
+						} else {
+							gameHistoryPanel.check();
+							messageOut.println("checkOnly ");
+						}
+
+					} else {
+						if (checkForStalemate(s.getPlayer()) == true) {
+							JOptionPane.showMessageDialog(null, "Stalemate.");
+							messageOut.println("stalemate");
+						}
+					}
+
+					isCurrentPlayer = false;
+				}
+
+				removePossibleMoves();
+				possibleMovesShown = false;
+
+			}
+		}
 	}
 
 }

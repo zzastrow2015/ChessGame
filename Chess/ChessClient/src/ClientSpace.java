@@ -1,9 +1,9 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
-
+import javax.swing.JPanel;
 
 public class ClientSpace extends JPanel{
 	
@@ -20,11 +20,15 @@ public class ClientSpace extends JPanel{
 	private boolean castleMove;
 	
 	public ClientSpace(int horizontal, int vertical){
+		setLayout(new BorderLayout());
+		
+		setOpaque(false);
 		
 		x = horizontal;
 		y = vertical;
 		originalPieceHasMoved = false;
 		castleMove = false;
+		
 		if(x == 0 && y == 0){
 			setInitialPiece("blackRook");
 		}else if(x == 0 && y == 1){
@@ -62,8 +66,6 @@ public class ClientSpace extends JPanel{
 		}else if(x == 7 && y == 7){
 			setInitialPiece("whiteRook");
 		}
-
-		setOpaque(false);
 		
 	}
 	
@@ -187,15 +189,15 @@ public class ClientSpace extends JPanel{
 		castleMove = move;
 	}
 	
-	public int getX(){
+	public int getXPosition(){
 		return x;
 	}
 	
-	public int getY(){
+	public int getYPosition(){
 		return y;
 	}
 	
-	private void setInitialPiece(String pieceName){
+	public void setInitialPiece(String pieceName){
 		
 		currentPiece = new Piece(pieceName + ".png");
 		currentPieceId = pieceName;
@@ -206,7 +208,8 @@ public class ClientSpace extends JPanel{
 			player = "black";
 		}
 		
-		this.add(currentPiece);
+		this.add(currentPiece, BorderLayout.CENTER);
+		
 	}
 
 }

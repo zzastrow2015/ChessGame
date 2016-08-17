@@ -12,8 +12,8 @@ public class ClientGameBoard extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private BufferedImage bgImage;
-	private static ArrayList<ArrayList<ClientSpace>> spaces;
-	private JPanel grid = new JPanel();
+	private ArrayList<ArrayList<ClientSpace>> spaces;
+	private JPanel grid;
 	private boolean possibleMovesShown = false;
 	private ClientSpace selectedSpace;
 	private static PrintWriter messageOut;
@@ -30,18 +30,17 @@ public class ClientGameBoard extends JPanel {
 		messageOut = messageOut2;
 		gameHistoryPanel = gc;
 
+		grid = new JPanel();
 		grid.setLayout(new GridLayout(8, 8, 0, 0));
 		grid.setPreferredSize(new Dimension(400, 400));
 
 		try {
-			bgImage = ImageIO.read(new File("images\\chessBoard.png"));
+			bgImage = ImageIO.read(new File("src\\images\\chessBoard.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		this.validate();
 
 	}
 
@@ -69,30 +68,30 @@ public class ClientGameBoard extends JPanel {
 
 		if (space.getCurrentPieceId().equals("whitePawn") && playerColor.equals("white")) {
 
-			if (space.getX() > 0) {
-				if (spaces.get(space.getX() - 1).get(space.getY()).getCurrentPieceId() == null) {
-					highlightSpace(spaces.get(space.getX() - 1).get(space.getY()), Color.GREEN);
+			if (space.getXPosition() > 0) {
+				if (spaces.get(space.getXPosition() - 1).get(space.getYPosition()).getCurrentPieceId() == null) {
+					highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition()), Color.GREEN);
 
-					if (space.getX() == 6) {
-						if (spaces.get(space.getX() - 2).get(space.getY()).getCurrentPieceId() == null) {
-							highlightSpace(spaces.get(space.getX() - 2).get(space.getY()), Color.GREEN);
+					if (space.getXPosition() == 6) {
+						if (spaces.get(space.getXPosition() - 2).get(space.getYPosition()).getCurrentPieceId() == null) {
+							highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition()), Color.GREEN);
 						}
 					}
 
 				}
 
-				if (space.getY() > 0) {
-					if (spaces.get(space.getX() - 1).get(space.getY() - 1).getCurrentPieceId() != null) {
-						if (spaces.get(space.getX() - 1).get(space.getY() - 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 1), Color.RED);
+				if (space.getYPosition() > 0) {
+					if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1), Color.RED);
 						}
 					}
 				}
 
-				if (space.getY() < 7) {
-					if (spaces.get(space.getX() - 1).get(space.getY() + 1).getCurrentPieceId() != null) {
-						if (spaces.get(space.getX() - 1).get(space.getY() + 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 1), Color.RED);
+				if (space.getYPosition() < 7) {
+					if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1), Color.RED);
 
 						}
 					}
@@ -100,282 +99,282 @@ public class ClientGameBoard extends JPanel {
 			}
 
 		} else if (space.getCurrentPieceId().equals("blackPawn") && playerColor.equals("black")) {
-			if (space.getX() < 7) {
-				if (spaces.get(space.getX() + 1).get(space.getY()).getCurrentPieceId() == null) {
-					highlightSpace(spaces.get(space.getX() + 1).get(space.getY()), Color.GREEN);
+			if (space.getXPosition() < 7) {
+				if (spaces.get(space.getXPosition() + 1).get(space.getYPosition()).getCurrentPieceId() == null) {
+					highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition()), Color.GREEN);
 
-					if (space.getX() == 1) {
-						if (spaces.get(space.getX() + 2).get(space.getY()).getCurrentPieceId() == null) {
-							highlightSpace(spaces.get(space.getX() + 2).get(space.getY()), Color.GREEN);
+					if (space.getXPosition() == 1) {
+						if (spaces.get(space.getXPosition() + 2).get(space.getYPosition()).getCurrentPieceId() == null) {
+							highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition()), Color.GREEN);
 
 						}
 					}
 
 				}
 
-				if (space.getY() > 0) {
-					if (spaces.get(space.getX() + 1).get(space.getY() - 1).getCurrentPieceId() != null) {
-						if (spaces.get(space.getX() + 1).get(space.getY() - 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 1), Color.RED);
+				if (space.getYPosition() > 0) {
+					if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1), Color.RED);
 
 						}
 					}
 				}
 
-				if (space.getY() < 7) {
-					if (spaces.get(space.getX() + 1).get(space.getY() + 1).getCurrentPieceId() != null) {
-						if (spaces.get(space.getX() + 1).get(space.getY() + 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 1), Color.RED);
+				if (space.getYPosition() < 7) {
+					if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1), Color.RED);
 
 						}
 					}
 				}
 			}
 		} else if (space.getCurrentPieceId().equals("whiteRook") || space.getCurrentPieceId().equals("blackRook")) {
-			for (int x = space.getX() + 1; x <= 7; x++) {
-				if (spaces.get(x).get(space.getY()).getCurrentPieceId() != null) {
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
+				if (spaces.get(x).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 
 						}
 					} else if (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(x).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(x).get(space.getYPosition()), Color.GREEN);
 
 					}
 
 				}
 			}
 
-			for (int x = space.getX() - 1; x >= 0; x--) {
-				if (spaces.get(x).get(space.getY()).getCurrentPieceId() != null) {
+			for (int x = space.getXPosition() - 1; x >= 0; x--) {
+				if (spaces.get(x).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(x).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(x).get(space.getYPosition()), Color.GREEN);
 
 					}
 				}
 			}
 
-			for (int y = space.getY() + 1; y <= 7; y++) {
-				if (spaces.get(space.getX()).get(y).getCurrentPieceId() != null) {
+			for (int y = space.getYPosition() + 1; y <= 7; y++) {
+				if (spaces.get(space.getXPosition()).get(y).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(y), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(y), Color.GREEN);
 
 					}
 				}
 			}
 
-			for (int y = space.getY() - 1; y >= 0; y--) {
-				if (spaces.get(space.getX()).get(y).getCurrentPieceId() != null) {
+			for (int y = space.getYPosition() - 1; y >= 0; y--) {
+				if (spaces.get(space.getXPosition()).get(y).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					}
 					break;
 				} else {
-					spaces.get(space.getX()).get(y).setOpaque(true);
+					spaces.get(space.getXPosition()).get(y).setOpaque(true);
 					if ((space.getCurrentPieceId().equals("whiteRook") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackRook") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(y), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(y), Color.GREEN);
 
 					}
 				}
 			}
 		} else if (space.getCurrentPieceId().equals("whiteKnight") || space.getCurrentPieceId().equals("blackKnight")) {
-			if (space.getX() + 2 <= 7 && space.getY() + 1 <= 7) {
-				if (spaces.get(space.getX() + 2).get(space.getY() + 1).getCurrentPieceId() != null) {
+			if (space.getXPosition() + 2 <= 7 && space.getYPosition() + 1 <= 7) {
+				if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() + 2).get(space.getY() + 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() + 2).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() + 2).get(space.getY() + 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 2).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() + 2).get(space.getY() + 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() + 1), Color.GREEN);
 					}
 
 				}
 			}
 
-			if (space.getX() + 2 <= 7 && space.getY() - 1 >= 0) {
-				if (spaces.get(space.getX() + 2).get(space.getY() - 1).getCurrentPieceId() != null) {
+			if (space.getXPosition() + 2 <= 7 && space.getYPosition() - 1 >= 0) {
+				if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() + 2).get(space.getY() - 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() + 2).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() + 2).get(space.getY() - 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 2).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() + 2).get(space.getY() - 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() + 2).get(space.getYPosition() - 1), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() + 1 <= 7 && space.getY() + 2 <= 7) {
-				if (spaces.get(space.getX() + 1).get(space.getY() + 2).getCurrentPieceId() != null) {
+			if (space.getXPosition() + 1 <= 7 && space.getYPosition() + 2 <= 7) {
+				if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() + 1).get(space.getY() + 2).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 2), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() + 1).get(space.getY() + 2).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 2), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 2), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 2), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() + 1 <= 7 && space.getY() - 2 >= 0) {
-				if (spaces.get(space.getX() + 1).get(space.getY() - 2).getCurrentPieceId() != null) {
+			if (space.getXPosition() + 1 <= 7 && space.getYPosition() - 2 >= 0) {
+				if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() + 1).get(space.getY() - 2).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 2), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() + 1).get(space.getY() - 2).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 2), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 2), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 2), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() - 2 >= 0 && space.getY() - 1 >= 0) {
-				if (spaces.get(space.getX() - 2).get(space.getY() - 1).getCurrentPieceId() != null) {
+			if (space.getXPosition() - 2 >= 0 && space.getYPosition() - 1 >= 0) {
+				if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() - 2).get(space.getY() - 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 2).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() - 2).get(space.getY() - 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() - 2).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() - 2).get(space.getY() - 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() - 1), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() - 2 >= 0 && space.getY() + 1 <= 7) {
-				if (spaces.get(space.getX() - 2).get(space.getY() + 1).getCurrentPieceId() != null) {
+			if (space.getXPosition() - 2 >= 0 && space.getYPosition() + 1 <= 7) {
+				if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() - 2).get(space.getY() + 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 2).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() - 2).get(space.getY() + 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() - 2).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() - 2).get(space.getY() + 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() - 2).get(space.getYPosition() + 1), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() - 1 >= 0 && space.getY() - 2 >= 0) {
-				if (spaces.get(space.getX() - 1).get(space.getY() - 2).getCurrentPieceId() != null) {
+			if (space.getXPosition() - 1 >= 0 && space.getYPosition() - 2 >= 0) {
+				if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() - 1).get(space.getY() - 2).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 2), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() - 1).get(space.getY() - 2).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 2), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 2), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 2), Color.GREEN);
 					}
 				}
 			}
 
-			if (space.getX() - 1 >= 0 && space.getY() + 2 <= 7) {
-				if (spaces.get(space.getX() - 1).get(space.getY() + 2).getCurrentPieceId() != null) {
+			if (space.getXPosition() - 1 >= 0 && space.getYPosition() + 2 <= 7) {
+				if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() - 1).get(space.getY() + 2).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 2), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() - 1).get(space.getY() + 2).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 2), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKnight") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKnight") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 2), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 2), Color.GREEN);
 					}
 				}
 			}
 		} else if (space.getCurrentPieceId().equals("whiteBishop") || space.getCurrentPieceId().equals("blackBishop")) {
 			int tempX, tempY;
 
-			tempY = space.getY() + 1;
-			for (int x = space.getX() + 1; x <= 7; x++) {
+			tempY = space.getYPosition() + 1;
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
 				if (tempY <= 7) {
 					if (spaces.get(x).get(tempY).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteBishop") && playerColor.equals("white")) {
@@ -399,8 +398,8 @@ public class ClientGameBoard extends JPanel {
 				tempY++;
 			}
 
-			tempY = space.getY() - 1;
-			for (int x = space.getX() + 1; x <= 7; x++) {
+			tempY = space.getYPosition() - 1;
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
 				if (tempY >= 0) {
 					if (spaces.get(x).get(tempY).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteBishop") && playerColor.equals("white")) {
@@ -425,8 +424,8 @@ public class ClientGameBoard extends JPanel {
 
 			}
 
-			tempX = space.getX() - 1;
-			for (int y = space.getY() - 1; y >= 0; y--) {
+			tempX = space.getXPosition() - 1;
+			for (int y = space.getYPosition() - 1; y >= 0; y--) {
 				if (tempX >= 0) {
 					if (spaces.get(tempX).get(y).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteBishop") && playerColor.equals("white")) {
@@ -450,8 +449,8 @@ public class ClientGameBoard extends JPanel {
 
 			}
 
-			tempX = space.getX() - 1;
-			for (int y = space.getY() + 1; y <= 7; y++) {
+			tempX = space.getXPosition() - 1;
+			for (int y = space.getYPosition() + 1; y <= 7; y++) {
 				if (tempX >= 0) {
 					if (spaces.get(tempX).get(y).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteBishop") && playerColor.equals("white")) {
@@ -478,8 +477,8 @@ public class ClientGameBoard extends JPanel {
 		} else if (space.getCurrentPieceId().equals("whiteQueen") || space.getCurrentPieceId().equals("blackQueen")) {
 			int tempX, tempY;
 
-			tempY = space.getY() + 1;
-			for (int x = space.getX() + 1; x <= 7; x++) {
+			tempY = space.getYPosition() + 1;
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
 				if (tempY <= 7) {
 					if (spaces.get(x).get(tempY).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
@@ -503,8 +502,8 @@ public class ClientGameBoard extends JPanel {
 				tempY++;
 			}
 
-			tempY = space.getY() - 1;
-			for (int x = space.getX() + 1; x <= 7; x++) {
+			tempY = space.getYPosition() - 1;
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
 				if (tempY >= 0) {
 					if (spaces.get(x).get(tempY).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
@@ -528,8 +527,8 @@ public class ClientGameBoard extends JPanel {
 
 			}
 
-			tempX = space.getX() - 1;
-			for (int y = space.getY() - 1; y >= 0; y--) {
+			tempX = space.getXPosition() - 1;
+			for (int y = space.getYPosition() - 1; y >= 0; y--) {
 				if (tempX >= 0) {
 					if (spaces.get(tempX).get(y).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
@@ -554,8 +553,8 @@ public class ClientGameBoard extends JPanel {
 
 			}
 
-			tempX = space.getX() - 1;
-			for (int y = space.getY() + 1; y <= 7; y++) {
+			tempX = space.getXPosition() - 1;
+			for (int y = space.getYPosition() + 1; y <= 7; y++) {
 				if (tempX >= 0) {
 					if (spaces.get(tempX).get(y).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
@@ -580,85 +579,85 @@ public class ClientGameBoard extends JPanel {
 
 			}
 
-			for (int x = space.getX() + 1; x <= 7; x++) {
-				if (spaces.get(x).get(space.getY()).getCurrentPieceId() != null) {
+			for (int x = space.getXPosition() + 1; x <= 7; x++) {
+				if (spaces.get(x).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(x).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(x).get(space.getYPosition()), Color.GREEN);
 
 					}
 				}
 			}
 
-			for (int x = space.getX() - 1; x >= 0; x--) {
-				if (spaces.get(x).get(space.getY()).getCurrentPieceId() != null) {
+			for (int x = space.getXPosition() - 1; x >= 0; x--) {
+				if (spaces.get(x).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black")) {
-						if (spaces.get(x).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(x).get(space.getY()), Color.RED);
+						if (spaces.get(x).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(x).get(space.getYPosition()), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(x).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(x).get(space.getYPosition()), Color.GREEN);
 
 					}
 				}
 			}
 
-			for (int y = space.getY() + 1; y <= 7; y++) {
-				if (spaces.get(space.getX()).get(y).getCurrentPieceId() != null) {
+			for (int y = space.getYPosition() + 1; y <= 7; y++) {
+				if (spaces.get(space.getXPosition()).get(y).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(y), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(y), Color.GREEN);
 
 					}
 				}
 			}
 
-			for (int y = space.getY() - 1; y >= 0; y--) {
-				if (spaces.get(space.getX()).get(y).getCurrentPieceId() != null) {
+			for (int y = space.getYPosition() - 1; y >= 0; y--) {
+				if (spaces.get(space.getXPosition()).get(y).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(y).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(y), Color.RED);
+						if (spaces.get(space.getXPosition()).get(y).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(y), Color.RED);
 						}
 					}
 					break;
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteQueen") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackQueen") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(y), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(y), Color.GREEN);
 
 					}
 				}
@@ -666,170 +665,170 @@ public class ClientGameBoard extends JPanel {
 		} else if (space.getCurrentPieceId().equals("whiteKing") || space.getCurrentPieceId().equals("blackKing")) {
 
 			if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-				if (space.getX() == 7 && space.getY() == 4) {
+				if (space.getXPosition() == 7 && space.getYPosition() == 4) {
 					checkForCastleWhite();
 				}
 			} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-				if (space.getX() == 0 && space.getY() == 4) {
+				if (space.getXPosition() == 0 && space.getYPosition() == 4) {
 					checkForCastleBlack();
 				}
 			}
 
-			if (space.getX() > 0) {
-				if (spaces.get(space.getX() - 1).get(space.getY()).getCurrentPieceId() != null) {
+			if (space.getXPosition() > 0) {
+				if (spaces.get(space.getXPosition() - 1).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() - 1).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY()), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition()), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() - 1).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY()), Color.RED);
+						if (spaces.get(space.getXPosition() - 1).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition()), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() - 1).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition()), Color.GREEN);
 
 					}
 				}
 
-				if (space.getY() > 0) {
-					if (spaces.get(space.getX() - 1).get(space.getY() - 1).getCurrentPieceId() != null) {
+				if (space.getYPosition() > 0) {
+					if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-							if (spaces.get(space.getX() - 1).get(space.getY() - 1).getPlayer() == "black") {
-								highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 1), Color.RED);
+							if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1).getPlayer() == "black") {
+								highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1), Color.RED);
 							}
 						} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-							if (spaces.get(space.getX() - 1).get(space.getY() - 1).getPlayer() == "white") {
-								highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 1), Color.RED);
+							if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1).getPlayer() == "white") {
+								highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1), Color.RED);
 							}
 						}
 					} else {
 						if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 								|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() - 1), Color.GREEN);
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() - 1), Color.GREEN);
 
 						}
 					}
 				}
 
-				if (space.getY() < 7) {
-					if (spaces.get(space.getX() - 1).get(space.getY() + 1).getCurrentPieceId() != null) {
+				if (space.getYPosition() < 7) {
+					if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-							if (spaces.get(space.getX() - 1).get(space.getY() + 1).getPlayer() == "black") {
-								highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 1), Color.RED);
+							if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1).getPlayer() == "black") {
+								highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1), Color.RED);
 							}
 						} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-							if (spaces.get(space.getX() - 1).get(space.getY() + 1).getPlayer() == "white") {
-								highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 1), Color.RED);
+							if (spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1).getPlayer() == "white") {
+								highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1), Color.RED);
 							}
 						}
 					} else {
 						if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 								|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-							highlightSpace(spaces.get(space.getX() - 1).get(space.getY() + 1), Color.GREEN);
+							highlightSpace(spaces.get(space.getXPosition() - 1).get(space.getYPosition() + 1), Color.GREEN);
 
 						}
 					}
 				}
 			}
 
-			if (space.getX() < 7) {
-				if (spaces.get(space.getX() + 1).get(space.getY()).getCurrentPieceId() != null) {
+			if (space.getXPosition() < 7) {
+				if (spaces.get(space.getXPosition() + 1).get(space.getYPosition()).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-						if (spaces.get(space.getX() + 1).get(space.getY()).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY()), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition()).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition()), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-						if (spaces.get(space.getX() + 1).get(space.getY()).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY()), Color.RED);
+						if (spaces.get(space.getXPosition() + 1).get(space.getYPosition()).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition()), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX() + 1).get(space.getY()), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition()), Color.GREEN);
 
 					}
 				}
 
-				if (space.getY() > 0) {
-					if (spaces.get(space.getX() + 1).get(space.getY() - 1).getCurrentPieceId() != null) {
+				if (space.getYPosition() > 0) {
+					if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-							if (spaces.get(space.getX() + 1).get(space.getY() - 1).getPlayer() == "black") {
-								highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 1), Color.RED);
+							if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1).getPlayer() == "black") {
+								highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1), Color.RED);
 							}
 						} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-							if (spaces.get(space.getX() + 1).get(space.getY() - 1).getPlayer() == "white") {
-								highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 1), Color.RED);
+							if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1).getPlayer() == "white") {
+								highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1), Color.RED);
 							}
 						}
 					} else {
 						if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 								|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() - 1), Color.GREEN);
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() - 1), Color.GREEN);
 
 						}
 					}
 				}
 
-				if (space.getY() < 7) {
-					if (spaces.get(space.getX() + 1).get(space.getY() + 1).getCurrentPieceId() != null) {
+				if (space.getYPosition() < 7) {
+					if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
 						if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-							if (spaces.get(space.getX() + 1).get(space.getY() + 1).getPlayer() == "black") {
-								highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 1), Color.RED);
+							if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1).getPlayer() == "black") {
+								highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1), Color.RED);
 							}
 						} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-							if (spaces.get(space.getX() + 1).get(space.getY() + 1).getPlayer() == "white") {
-								highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 1), Color.RED);
+							if (spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1).getPlayer() == "white") {
+								highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1), Color.RED);
 							}
 						}
 					} else {
 						if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 								|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-							highlightSpace(spaces.get(space.getX() + 1).get(space.getY() + 1), Color.GREEN);
+							highlightSpace(spaces.get(space.getXPosition() + 1).get(space.getYPosition() + 1), Color.GREEN);
 
 						}
 					}
 				}
 			}
 
-			if (space.getY() > 0) {
-				if (spaces.get(space.getX()).get(space.getY() - 1).getCurrentPieceId() != null) {
+			if (space.getYPosition() > 0) {
+				if (spaces.get(space.getXPosition()).get(space.getYPosition() - 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(space.getY() - 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition()).get(space.getYPosition() - 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() - 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(space.getY() - 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(space.getY() - 1), Color.RED);
+						if (spaces.get(space.getXPosition()).get(space.getYPosition() - 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() - 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(space.getY() - 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() - 1), Color.GREEN);
 
 					}
 				}
 			}
 
-			if (space.getY() < 7) {
-				if (spaces.get(space.getX()).get(space.getY() + 1).getCurrentPieceId() != null) {
+			if (space.getYPosition() < 7) {
+				if (spaces.get(space.getXPosition()).get(space.getYPosition() + 1).getCurrentPieceId() != null) {
 					if (space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white")) {
-						if (spaces.get(space.getX()).get(space.getY() + 1).getPlayer() == "black") {
-							highlightSpace(spaces.get(space.getX()).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition()).get(space.getYPosition() + 1).getPlayer() == "black") {
+							highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() + 1), Color.RED);
 						}
 					} else if (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black")) {
-						if (spaces.get(space.getX()).get(space.getY() + 1).getPlayer() == "white") {
-							highlightSpace(spaces.get(space.getX()).get(space.getY() + 1), Color.RED);
+						if (spaces.get(space.getXPosition()).get(space.getYPosition() + 1).getPlayer() == "white") {
+							highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() + 1), Color.RED);
 						}
 					}
 				} else {
 					if ((space.getCurrentPieceId().equals("whiteKing") && playerColor.equals("white"))
 							|| (space.getCurrentPieceId().equals("blackKing") && playerColor.equals("black"))) {
-						highlightSpace(spaces.get(space.getX()).get(space.getY() + 1), Color.GREEN);
+						highlightSpace(spaces.get(space.getXPosition()).get(space.getYPosition() + 1), Color.GREEN);
 
 					}
 				}
@@ -927,6 +926,7 @@ public class ClientGameBoard extends JPanel {
 	public void setPieces() {
 
 		this.remove(waitingImage);
+		this.invalidate();
 
 		playerColor = "white";
 
@@ -962,7 +962,6 @@ public class ClientGameBoard extends JPanel {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				grid.add(spaces.get(i).get(j));
-				grid.validate();
 			}
 		}
 		
@@ -970,23 +969,14 @@ public class ClientGameBoard extends JPanel {
 		this.add(grid);
 		this.validate();
 
-		
-	
 	}
 
 	public void invertBoard() {
 
 		this.remove(waitingImage);
+		this.invalidate();
 
 		playerColor = "black";
-
-		grid.removeAll();
-		grid.invalidate();
-		this.remove(grid);
-
-		grid = new JPanel();
-		grid.setLayout(new GridLayout(8, 8, 0, 0));
-		grid.setPreferredSize(new Dimension(400, 400));
 
 		spaces = new ArrayList<ArrayList<ClientSpace>>();
 
@@ -2500,6 +2490,7 @@ public class ClientGameBoard extends JPanel {
 	}
 	
 	private void mouseListenerHandler(ClientSpace s){
+		
 		if (isCurrentPlayer == true) {
 			if (possibleMovesShown == false) {
 				if (s.getCurrentPieceId() != null) {
@@ -2513,19 +2504,19 @@ public class ClientGameBoard extends JPanel {
 
 					if (s.isCastleMove() == true) {
 
-						if (s.getX() == 7 && s.getY() == 6) {
+						if (s.getXPosition() == 7 && s.getYPosition() == 6) {
 							movePiece(spaces.get(7).get(5), spaces.get(7).get(7));
 							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
 							gameHistoryPanel.castle(5);
-						} else if (s.getX() == 7 && s.getY() == 2) {
+						} else if (s.getXPosition() == 7 && s.getYPosition() == 2) {
 							movePiece(spaces.get(7).get(3), spaces.get(7).get(0));
 							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
 							gameHistoryPanel.castle(3);
-						} else if (s.getX() == 0 && s.getY() == 6) {
+						} else if (s.getXPosition() == 0 && s.getYPosition() == 6) {
 							movePiece(spaces.get(0).get(5), spaces.get(0).get(7));
 							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
 							gameHistoryPanel.castle(5);
-						} else if (s.getX() == 0 && s.getY() == 2) {
+						} else if (s.getXPosition() == 0 && s.getYPosition() == 2) {
 							movePiece(spaces.get(0).get(3), spaces.get(0).get(0));
 							spaces.get(7).get(7).setOriginalPieceHasMoved(true);
 							gameHistoryPanel.castle(3);
@@ -2534,7 +2525,7 @@ public class ClientGameBoard extends JPanel {
 						}
 					}
 
-					ClientSpace tempSpace = new ClientSpace(s.getX(), s.getY());
+					ClientSpace tempSpace = new ClientSpace(s.getXPosition(), s.getYPosition());
 					tempSpace.setCurrentPiece(s.getCurrentPiece());
 					tempSpace.setCurrentPieceId(s.getCurrentPieceId());
 					tempSpace.setPlayer(s.getPlayer());
@@ -2554,24 +2545,24 @@ public class ClientGameBoard extends JPanel {
 					}
 
 					if (s.isCastleMove() == false) {
-						messageOut.println("move " + s.getX() + " " + s.getY() + " "
-								+ selectedSpace.getX() + " " + selectedSpace.getY());
+						messageOut.println("move " + s.getXPosition() + " " + s.getYPosition() + " "
+								+ selectedSpace.getXPosition() + " " + selectedSpace.getYPosition());
 
 						if (capturedSpaceId == null) {
-							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-									selectedSpace.getX(), selectedSpace.getY(), false);
+							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getXPosition(), s.getYPosition(),
+									selectedSpace.getXPosition(), selectedSpace.getYPosition(), false);
 
 						} else {
-							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getX(), s.getY(),
-									selectedSpace.getX(), selectedSpace.getY(), true);
+							gameHistoryPanel.newMove(s.getCurrentPieceId(), s.getXPosition(), s.getYPosition(),
+									selectedSpace.getXPosition(), selectedSpace.getYPosition(), true);
 
 						}
 
 					} else {
-						messageOut.println("castle " + s.getX() + " " + s.getY());
+						messageOut.println("castle " + s.getXPosition() + " " + s.getYPosition());
 					}
 
-					if (s.getCurrentPieceId().equals("blackPawn") && s.getX() == 7) {
+					if (s.getCurrentPieceId().equals("blackPawn") && s.getXPosition() == 7) {
 						Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
 								"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
 						String chosenPieceString;
@@ -2580,11 +2571,11 @@ public class ClientGameBoard extends JPanel {
 						} else {
 							chosenPieceString = "Queen";
 						}
-						messageOut.println("promotion " + s.getX() + " " + s.getY() + " black"
+						messageOut.println("promotion " + s.getXPosition() + " " + s.getYPosition() + " black"
 								+ chosenPieceString);
 						s.promote("black" + chosenPieceString, s.getPlayer());
 
-					} else if (s.getCurrentPieceId().equals("whitePawn") && s.getX() == 0) {
+					} else if (s.getCurrentPieceId().equals("whitePawn") && s.getXPosition() == 0) {
 						Object chosenPiece = JOptionPane.showInputDialog(null, "Select a new piece!",
 								"Selection", JOptionPane.DEFAULT_OPTION, null, promotionOptions, "0");
 						String chosenPieceString;
@@ -2593,7 +2584,7 @@ public class ClientGameBoard extends JPanel {
 						} else {
 							chosenPieceString = "Queen";
 						}
-						messageOut.println("promotion " + s.getX() + " " + s.getY() + " white"
+						messageOut.println("promotion " + s.getXPosition() + " " + s.getYPosition() + " white"
 								+ chosenPieceString);
 						s.promote("white" + chosenPieceString, s.getPlayer());
 
